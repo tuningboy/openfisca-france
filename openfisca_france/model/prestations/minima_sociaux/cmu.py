@@ -70,6 +70,16 @@ class acs_montant(Variable):
         return famille.sum(acs_montant_i)
 
 
+class RegimeComplementaireSanteSolidaire(Enum):
+    france = u"France"
+    alsace_moselle = u"Alsace Moselle"
+
+
+class ComplementaireSanteSolidaireTrancheAge(Enum):
+    moins_30_ans = u"France"
+    ...
+
+
 class complementaire_sante_solidaire_montant_i(Variable):
     value_type = float
     entity = Individu
@@ -78,23 +88,18 @@ class complementaire_sante_solidaire_montant_i(Variable):
 
     def formula(individu, period, parameters):
         P = parameters(period).cmu.complementaire_sante_solidaire
-        p_alsace_moselle = parameters(period).cmu.complementaire_sante_solidaire_regime_alsace_moselle
+
+        regime = select([individu('salarie_regime_alsace_moselle', period)],
+            [RegimeComplementaireSanteSolidaire.alsace_moselle],
+            default=RegimeComplementaireSanteSolidaire.france)
+
         age = individu('age', period)
-        salarie_regime_alsace_moselle = individu('salarie_regime_alsace_moselle', period)
-
-        montant_si_parent = select(
+        tranche = select(
             [age <= 29, age <= 49, age <= 59, age <= 69, age >= 70],
-            [P.cmu_moins_30_ans, P.cmu_30_49_ans, P.cmu_50_59_ans,
-             P.cmu_60_69_ans, P.cmu_plus_69_ans],
-            )
+            [ComplementaireSanteSolidaireTrancheAge.moins_30_ans, ...]
+        )
 
-        montant_si_parent_regime_alsace_moselle = select(
-            [age <= 29, age <= 49, age <= 59, age <= 69, age >= 70],
-            [p_alsace_moselle.cmu_moins_30_ans, p_alsace_moselle.cmu_30_49_ans, p_alsace_moselle.cmu_50_59_ans,
-             p_alsace_moselle.cmu_60_69_ans, p_alsace_moselle.cmu_plus_69_ans],
-            )
-
-        return where(salarie_regime_alsace_moselle, montant_si_parent_regime_alsace_moselle, montant_si_parent)
+        return P[regime][tranche]
 
 
 class complementaire_sante_solidaire_montant(Variable):
