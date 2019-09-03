@@ -959,7 +959,8 @@ class aide_logement_base_ressources(Variable):
 
         # Ressources N-1
         pensions_alimentaires_versees = famille.demandeur.foyer_fiscal('pensions_alimentaires_versees', period.last_year)
-        ressources_n_1 = pensions_alimentaires_versees
+        # Montant à soustraire
+        ressources_n_1 = -pensions_alimentaires_versees
 
         # Ressources N-2
         indemnites_journalieres_atexa_i = famille.members('indemnites_journalieres_atexa', period.n_2, options=[ADD])
@@ -989,11 +990,12 @@ class aide_logement_base_ressources(Variable):
         ressources_n_2 = famille.sum(ressources_n_2_i, role=Famille.PARENT)
         f4ba = famille.demandeur.foyer_fiscal('f4ba', period.n_2)
         plus_values_gains_divers = famille.demandeur.foyer_fiscal('plus_values_gains_divers', period.n_2)
+        # Montant à soustraire
         deficit_exercice = famille.demandeur.foyer_fiscal('deficit_exercice', period.n_2)
         ressources_n_2 += (
             f4ba
             + plus_values_gains_divers
-            + deficit_exercice
+            - deficit_exercice
             )
 
         # Montants a soustraire
