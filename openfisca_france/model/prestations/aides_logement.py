@@ -960,7 +960,7 @@ class aide_logement_base_ressources(Variable):
         # Ressources N-1
         pensions_alimentaires_versees_i = famille.members('pensions_alimentaires_versees_individu', period.last_year, options=[ADD])
         pensions_alimentaires_versees = famille.sum(pensions_alimentaires_versees_i, role=Famille.PARENT)
-        #Montant à soustraire
+        # Montant à soustraire
         ressources_n_1 = -pensions_alimentaires_versees
 
         # Ressources N-2
