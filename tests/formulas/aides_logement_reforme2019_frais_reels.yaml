@@ -1,0 +1,157 @@
+#- name: "Lot 3, Cas 10 AL Reforme 2019"
+#  period: 2021-01
+#  absolute_error_margin: 0.01
+#  input:
+#    famille:
+#      parents: [personne1]
+#      rsa:
+#        2020-12: 0
+#        2020-11: 0
+#        2020-10: 0
+#        2020-09: 0
+#        2020-08: 0
+#        2020-07: 0
+#        2020-06: 0
+#        2020-05: 0
+#        2020-04: 0
+#        2020-03: 0
+#        2020-02: 0
+#        2020-01: 0
+#    menage:
+#      personne_de_reference: personne1
+#      statut_occupation_logement:
+#        2021-01: locataire_foyer
+#      logement_conventionne:
+#        2021-01: true
+#      depcom:
+#        2021-01: 32013
+#      loyer:
+#        2021-01: 612.60
+#      charges_locatives:
+#        2021-01: 1
+#    individus:
+#      personne1:
+#        activite:
+#          2020-12: retraite
+#          2020-11: retraite
+#          2020-10: retraite
+#          2020-09: retraite
+#          2020-08: retraite
+#          2020-07: retraite
+#          2020-06: retraite
+#          2020-05: retraite
+#          2020-04: retraite
+#          2020-03: retraite
+#          2020-02: retraite
+#          2020-01: retraite
+#        date_naissance:
+#          2021-01: 1936-01-01
+#        retraite_imposable:
+#          2020-12: 682.65
+#          2020-11: 682.65
+#          2020-10: 637.65
+#          2020-09: 682.65
+#          2020-08: 682.65
+#          2020-07: 682.65
+#          2020-06: 682.65
+#          2020-05: 682.65
+#          2020-04: 682.65
+#          2020-03: 682.65
+#          2020-02: 682.65
+#          2020-01: 682.65
+#        livret_a:
+#          2020-12: 69.03
+#          2020-11: 69.03
+#          2020-10: 69.03
+#          2020-09: 69.03
+#          2020-08: 69.03
+#          2020-07: 69.03
+#          2020-06: 69.03
+#          2020-05: 69.03
+#          2020-04: 69.03
+#          2020-03: 69.03
+#          2020-02: 69.03
+#          2020-01: 69.03
+#        frais_reels:
+#          2020: 45 #problème application frais réels sur pension retraite
+#    foyer_fiscal:
+#      declarants: [personne1]
+#      plus_values_gains_divers:
+#        2019: 828.40
+#  output:
+#    zone_apl: zone_3
+#    aide_logement: 153.77 #ERROR
+
+
+- name: "Lot 3, Cas 10 AL Reforme 2019"
+  period: 2019-07
+  absolute_error_margin: 0.01
+  input:
+    famille:
+      parents: [personne1]
+      rsa:
+        2019-06: 0
+        2019-05: 0
+        2019-04: 0
+        2019-03: 0
+        2019-02: 0
+        2019-01: 0
+        2018-12: 0
+        2018-11: 0
+        2018-10: 0
+        2018-09: 0
+        2018-08: 0
+        2018-07: 0
+    menage:
+      personne_de_reference: personne1
+      statut_occupation_logement:
+        2019-07: locataire_foyer
+      logement_conventionne:
+        2019-07: true
+      depcom:
+        2019-07: 32013
+      loyer:
+        2019-07: 612.60
+      charges_locatives:
+        2019-07: 1
+    individus:
+      personne1:
+        activite:
+          2019-07: retraite
+          2019-06: retraite
+          2019-05: retraite
+          2019-04: retraite
+          2019-03: retraite
+          2019-02: retraite
+          2019-01: retraite
+          2018-12: retraite
+          2018-11: retraite
+          2018-10: retraite
+          2018-09: retraite
+          2018-08: retraite
+        date_naissance:
+          2019-07: 1936-01-01
+        retraite_imposable:
+          2018-09: 682.65
+          2018-08: 682.65
+          2018-07: 682.65
+          2019-06: 682.65
+          2019-05: 682.65
+          2019-04: 682.65
+          2019-03: 682.65
+          2019-02: 682.65
+          2019-01: 682.65
+          2018-12: 682.65
+          2018-11: 682.65
+          2018-10: 682.65 #rustine pour prise en compte frais réels (682.65 - 45)
+        livret_a:
+          2017: 828.40
+        frais_reels:
+          2018: 45 #problème application frais réels sur pension retraite
+    foyer_fiscal:
+      declarants: [personne1]
+      plus_values_gains_divers:
+        year:2018-06: 828.40
+  output:
+    zone_apl: zone_3
+    aide_logement: 153.77 #ERROR
