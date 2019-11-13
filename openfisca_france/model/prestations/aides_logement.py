@@ -173,6 +173,9 @@ class aide_logement_montant_brut_avant_degressivite(Variable):
 
     def formula(famille, period, parameters):
         al = parameters(period).prestations.aides_logement
+
+        residence_mayotte = famille.demandeur.menage('residence_mayotte', period)
+
         statut_occupation_logement = famille.demandeur.menage('statut_occupation_logement', period)
         locataire = ((statut_occupation_logement == TypesStatutOccupationLogement.locataire_hlm)
                 + (statut_occupation_logement == TypesStatutOccupationLogement.locataire_vide)
@@ -198,7 +201,7 @@ class aide_logement_montant_brut_avant_degressivite(Variable):
         seuil_versement = al.al_min.montant_min_mensuel.montant_min_apl_al[type_aide]
         minimum_atteint = montant >= seuil_versement
 
-        return minimum_atteint * montant
+        return minimum_atteint * montant * not_(residence_mayotte)
 
 
 class TypeEtatLogementFoyer(Enum):
@@ -519,7 +522,7 @@ class aide_logement_condition_neutralisation_chomage(Variable):
     label = "Condition de neutralisation du chomage dans le calcul des ressources de l'aide au logement."
     definition_period = MONTH
 
-    def formula_2020_10_01(individu, period, parameters):
+    def formula_2019_10_01(individu, period, parameters):
         # Rolling year
         annee_glissante = period.start.period('year').offset(-1)
 
@@ -555,7 +558,7 @@ class aide_logement_assiette_abattement_chomage(Variable):
     label = "Assiette sur lequel un abattement chômage peut être appliqués pour les AL. Ce sont les revenus d'activité professionnelle, moins les abbattements pour frais professionnels."
     definition_period = YEAR
 
-    def formula_2020_10_01(individu, period, parameters):
+    def formula_2019_10_01(individu, period, parameters):
         # Rolling year
         annee_glissante = period.start.period('year').offset(-1)
 
@@ -601,7 +604,7 @@ class aide_logement_abattement_chomage_indemnise(Variable):
     # Article R532-7 du Code de la sécurité sociale
     reference = "https://www.legifrance.gouv.fr/affichCodeArticle.do?idArticle=LEGIARTI000031694522&cidTexte=LEGITEXT000006073189"
 
-    def formula_2020_10_01(individu, period, parameters):
+    def formula_2019_10_01(individu, period, parameters):
         activite = individu('activite', period)
         date_debut_chomage = individu('date_debut_chomage', period)
         two_months_ago = datetime64(period.offset(-2, 'month').start)
@@ -630,7 +633,7 @@ class aide_logement_abattement_depart_retraite(Variable):
     # Article R532-5 du Code de la sécurité sociale
     reference = "https://www.legifrance.gouv.fr/affichCodeArticle.do?idArticle=LEGIARTI000006750910&cidTexte=LEGITEXT000006073189&dateTexte=20151231"
 
-    def formula_2020_10_01(individu, period, parameters):
+    def formula_2019_10_01(individu, period, parameters):
         # Rolling year
         annee_glissante = period.start.period('year').offset(-1)
 
@@ -756,7 +759,7 @@ class aide_logement_base_revenus_fiscaux(Variable):
         ]
     definition_period = YEAR
 
-    def formula_2020_10_01(foyer_fiscal, period):
+    def formula_2019_10_01(foyer_fiscal, period):
         rente_viagere_titre_onereux_net = foyer_fiscal('rente_viagere_titre_onereux_net', period)
         # Deplacement de la pension alimentaire versée, utilisée sur une periode differentes du reste
         # Supprimée à partir de 2018
@@ -849,7 +852,7 @@ class al_revenu_assimile_salaire_apres_abattements(Variable):
     label = "Salaires et chômage imposables après abattements dans le cadre du calcul des ressources de l'aide au logement"
     definition_period = MONTH
 
-    def formula_2020_10_01(individu, period, parameters):
+    def formula_2019_10_01(individu, period, parameters):
         # version spécifique aux aides logement de revenu_assimile_salaire_apres_abattements
         period_revenus = period
         period_chomage = period.n_2
@@ -877,7 +880,7 @@ class al_traitements_salaires_pensions_rentes(Variable):
     label = "Traitements salaires pensions et rentes individuelles dans le cadre des aides au logement"
     definition_period = MONTH
 
-    def formula_2020_10_01(individu, period, parameters):
+    def formula_2019_10_01(individu, period, parameters):
         # Rolling year
         annee_glissante = period.start.period('year').offset(-1)
 
@@ -912,7 +915,7 @@ class al_base_ressources_individu(Variable):
     label = "Base ressource individuelle des aides logement"
     definition_period = MONTH
 
-    def formula_2020_10_01(individu, period):
+    def formula_2019_10_01(individu, period):
         traitements_salaires_pensions_rentes = individu('al_traitements_salaires_pensions_rentes', period)
         hsup = individu('hsup', period.n_2, options = [ADD])
         glo = individu('glo', period.n_2)
@@ -932,7 +935,7 @@ class aide_logement_base_ressources(Variable):
     label = "Base ressources des allocations logement"
     definition_period = MONTH
 
-    def formula_2020_10_01(famille, period, parameters):
+    def formula_2019_10_01(famille, period, parameters):
         biactivite = famille('biactivite', period)
         params_al_ressources = parameters(period).prestations.aides_logement.ressources
 
@@ -1052,7 +1055,7 @@ class aide_logement_base_ressources(Variable):
         demandeur_boursier = famille.demandeur('boursier', period)
         statut_occupation_logement = famille.demandeur.menage('statut_occupation_logement', period)
         logement_crous = famille.demandeur.menage('logement_crous', period)
-        logement_crous_ou_foyer = (statut_occupation_logement == TypesStatutOccupationLogement.locataire_foyer + logement_crous)
+        logement_crous_ou_foyer = (statut_occupation_logement == TypesStatutOccupationLogement.locataire_foyer) + logement_crous
         montant_plancher_ressources = not_(logement_crous_ou_foyer) * max_(0, demandeur_etudiant * params_al_ressources.dar_4 - demandeur_boursier * params_al_ressources.dar_5)
         montant_plancher_ressources_logement_foyer = logement_crous_ou_foyer * max_(0, demandeur_etudiant * params_al_ressources.dar_11 - demandeur_boursier * params_al_ressources.dar_12)
 
@@ -1512,12 +1515,6 @@ class aides_logement_accedant_et_foyer(Variable):
         C = forfait_charges * famille('aide_logement_charges', period)
         K = famille('aides_logement_k', period)
         Lo = famille('aides_logement_loyer_minimal', period)
-
-        print(K)
-        print(L)
-        print(Lo)
-        print(forfait_charges)
-        print(C)
 
         return (L > 0) * K * max_(0, (L + C - Lo))
 
