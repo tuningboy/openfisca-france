@@ -948,6 +948,7 @@ class aide_logement_base_ressources(Variable):
         # Ressources des douze derniers mois
         indemnites_journalieres_i = famille.members('indemnites_journalieres', annee_glissante, options=[ADD])
         revenus_stage_formation_pro_i = famille.members('revenus_stage_formation_pro', annee_glissante, options=[ADD])
+        remuneration_apprenti_i = famille.members('remuneration_apprenti', annee_glissante, options=[ADD])
         indemnites_stage_i = famille.members('indemnites_stage', annee_glissante, options=[ADD])
         pch_i = famille.members('pch', annee_glissante, options=[ADD])
         retraite_combattant_i = famille.members('retraite_combattant', annee_glissante, options=[ADD])
@@ -955,6 +956,7 @@ class aide_logement_base_ressources(Variable):
         ressources_annee_glissante_i = (
             indemnites_journalieres_i
             + revenus_stage_formation_pro_i
+            + remuneration_apprenti_i
             + indemnites_stage_i
             + pch_i
             + retraite_combattant_i
