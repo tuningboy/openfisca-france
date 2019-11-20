@@ -116,48 +116,48 @@
     aide_logement_base_ressources: 9600
     aide_logement: 99.54
 
-- name: "Lot 1, Cas 4 AL Reforme 2019"
-  period: 2021-01
-  relative_error_margin: 0.01
-  input:
-    famille:
-      parents: [personne1]
-    menage:
-      personne_de_reference: personne1
-      statut_occupation_logement:
-        2021-01: locataire_vide
-      logement_conventionne:
-        2021-01: false
-      depcom:
-        2021-01: 32013
-      loyer:
-        2021-01: 311
-    individus:
-      personne1:
-        activite: actif
-        date_naissance:
-          2021-01: 1986-01-01
-        salaire_imposable:
-          2020-12: 800
-          2020-11: 800
-          2020-10: 800
-          2020-09: 800
-          2020-08: 800
-          2020-07: 800
-          2020-06: 800
-          2020-05: 800
-          2020-04: 800
-          2020-03: 800
-          2020-02: 800
-          2020-01: 800
-        pensions_alimentaires_versees_individu:
-          2020: 2376
-    foyer_fiscal:
-      declarants: [personne1]
-  output:
-    zone_apl: zone_3
-    aide_logement_base_ressources: 6300
-    aide_logement: 0
+#- name: "Lot 1, Cas 4 AL Reforme 2019"
+#  period: 2021-01
+#  relative_error_margin: 0.01
+#  input:
+#    famille:
+#      parents: [personne1]
+#    menage:
+#      personne_de_reference: personne1
+#      statut_occupation_logement:
+#        2021-01: locataire_vide
+#      logement_conventionne:
+#        2021-01: false
+#      depcom:
+#        2021-01: 32013
+#      loyer:
+#        2021-01: 311
+#    individus:
+#      personne1:
+#        activite: actif
+#        date_naissance:
+#          2021-01: 1986-01-01
+#        salaire_imposable:
+#          2020-12: 800
+#          2020-11: 800
+#          2020-10: 800
+#          2020-09: 800
+#          2020-08: 800
+#          2020-07: 800
+#          2020-06: 800
+#          2020-05: 800
+#          2020-04: 800
+#          2020-03: 800
+#          2020-02: 800
+#          2020-01: 800
+#        pensions_alimentaires_versees_individu:
+#          2020: 2376
+#    foyer_fiscal:
+#      declarants: [personne1]
+#  output:
+#    zone_apl: zone_3
+#    aide_logement_base_ressources: 6300
+#    aide_logement: 0
 
 - name: "Lot 2, Cas 5 AL Reforme 2019"
   period: 2021-01
@@ -629,3 +629,85 @@
     aide_logement_base_ressources: 7700
     aide_logement: 145.3
     reduction_loyer_solidarite: 28.18
+
+- name: "cas test pour la remuneration apprenti"
+  period: 2021-01
+  relative_error_margin: 0.01
+  input:
+    famille:
+      parents: [personne1]
+      rsa:
+        2020-12: 0
+        2020-11: 0
+        2020-10: 0
+        2020-09: 0
+        2020-08: 0
+        2020-07: 0
+        2020-06: 0
+        2020-05: 0
+        2020-04: 0
+        2020-03: 0
+        2020-02: 0
+        2020-01: 0
+    menage:
+      personne_de_reference: personne1
+      statut_occupation_logement:
+        2021-01: locataire_vide
+      depcom:
+        2021-01: 32107
+      loyer:
+        2021-01: 500
+      charges_locatives:
+        2021-01: 20
+    individus:
+      personne1:
+        date_naissance:
+          2021-01: 1986-12-01
+        salaire_imposable:
+          2020: 0
+        remuneration_apprenti:
+          2020: 700 * 12
+    foyer_fiscal:
+      declarants: [personne1]
+  output:
+    aide_logement: 161.8
+
+- name: "cas test pour l'indemnites de stage"
+  period: 2021-01
+  relative_error_margin: 0.01
+  input:
+    famille:
+      parents: [personne1]
+      rsa:
+        2020-12: 0
+        2020-11: 0
+        2020-10: 0
+        2020-09: 0
+        2020-08: 0
+        2020-07: 0
+        2020-06: 0
+        2020-05: 0
+        2020-04: 0
+        2020-03: 0
+        2020-02: 0
+        2020-01: 0
+    menage:
+      personne_de_reference: personne1
+      statut_occupation_logement:
+        2021-01: locataire_vide
+      depcom:
+        2021-01: 32107
+      loyer:
+        2021-01: 500
+      charges_locatives:
+        2021-01: 20
+    individus:
+      personne1:
+        date_naissance:
+          2021-01: 1986-12-01
+        indemnites_stage:
+          2020: 700 * 12
+    foyer_fiscal:
+      declarants: [personne1]
+  output:
+    aide_logement: 161.08
